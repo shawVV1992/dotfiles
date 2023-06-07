@@ -90,6 +90,12 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
     end,
   })
   
+  -- Don't auto commenting new lines
+  vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "",
+    command = "set fo-=c fo-=r fo-=o",
+})
+
   -- Auto create dir when saving a file, in case some intermediate directory does not exist
   vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     group = augroup("auto_create_dir"),
