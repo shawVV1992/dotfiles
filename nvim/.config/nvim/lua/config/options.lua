@@ -6,6 +6,9 @@ vim.g.maplocalleader = " "
 vim.g.encoding="UTF-8"
 vim.o.fileencoding="utf-8"
 
+-- autowrite
+vim.o.autowrite=true
+
 -- jkhl 移动时光标周围保留8行
 vim.o.scrolloff=8
 vim.o.sidescrolloff=8
@@ -21,7 +24,7 @@ vim.wo.cursorline=true
 vim.wo.signcolumn="yes"
 
 -- 右侧参考线，超过表示代码太长，考虑换行
-vim.wo.colorcolumn="120"
+--vim.wo.colorcolumn="120"
 
 -- 缩进4个空格等于1个Tab
 vim.o.tabstop=4
@@ -77,7 +80,7 @@ vim.o.writebackup=false
 vim.o.swapfile=false
 
 -- 缩短自动更新时间
-vim.o.updatetime=300
+--vim.o.updatetime=300
 
 -- 设置等待键盘连击时间为500ms
 vim.o.timeoutlen=500
@@ -117,36 +120,7 @@ vim.o.showmode=false
 vim.o.clipboard="unnamed"
 vim.o.clipboard="unnamedplus"
 
---共享剪贴板(获取windows剪贴板)
 
-if vim.fn.has("wsl") == 1 then
-  vim.g.clipboard = {
-    name = "win32yank-wsl",
-    copy = {
-      ["+"] = "win32yank.exe -i --crlf",
-      ["*"] = "win32yank.exe -i --crlf",
-    },
-    paste = {
-      ["+"] = "win32yank.exe -o --lf",
-      ["*"] = "win32yank.exe -o --lf",
-    },
-    cache_enabled = 0,
-  }
-end
-
-
-
--- 在复制后高亮
-vim.api.nvim_create_autocmd(
-  {"TextYankPost"},
-  {
-    pattern={"*"},
-    callback=function()
-      vim.highlight.on_yank({
-        timeout=300,
-      })
-    end,
- })
 
  -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
