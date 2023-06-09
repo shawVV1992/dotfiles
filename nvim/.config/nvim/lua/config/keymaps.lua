@@ -19,5 +19,8 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 -- "jk" 代替 <Esc>
-map("i", "jk", "<esc>", { desc = "Back to Normal Mode", remap = true })
-map("i", "kj", "<esc>", { desc = "Back to Normal Mode", remap = true })
+map("i", "jk", "<esc>", { desc = "back to Normal mode", remap = true })
+map("i", "kj", "<esc>", { desc = "back to Normal mode", remap = true })
+
+-- 窗口
+map("n", "<leader>w=", "<C-w>=", { desc = "equal window size", remap = true })
