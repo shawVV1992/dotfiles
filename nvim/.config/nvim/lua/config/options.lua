@@ -20,7 +20,7 @@ vim.wo.cursorline = true
 vim.wo.signcolumn = "yes"
 
 -- 右侧参考线，超过表示代码太长，考虑换行
---vim.wo.colorcolumn="120"
+vim.wo.colorcolumn = "120"
 
 -- 缩进4个空格等于1个Tab
 vim.o.tabstop = 4
@@ -76,7 +76,7 @@ vim.o.writebackup = false
 vim.o.swapfile = false
 
 -- 缩短自动更新时间
---vim.o.updatetime=300
+vim.o.updatetime = 300
 
 -- 设置等待键盘连击时间为500ms
 vim.o.timeoutlen = 500
