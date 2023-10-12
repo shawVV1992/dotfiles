@@ -23,4 +23,4 @@ map("i", "jk", "<esc>", { desc = "back to Normal mode", remap = true })
 map("i", "kj", "<esc>", { desc = "back to Normal mode", remap = true })
 
 -- 窗口
-map("n", "<leader>w=", "<C-w>=", { desc = "equal window size", remap = true })
+map("n", "<leader>w=", "<C-w>", { desc = "equal window size", remap = true })
