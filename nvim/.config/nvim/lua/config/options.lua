@@ -49,7 +49,7 @@ vim.o.smartcase = true
 vim.o.hlsearch = true
 
 -- 边输入边搜索
-vim.o.insearch = true
+vim.o.incsearch = true
 
 -- 命令行高为2，提供足够的显示空间
 vim.o.cmdheight = 2
@@ -104,7 +104,7 @@ vim.o.wildmenu = true
 vim.o.shortmess = vim.o.shortmess .. "c"
 
 -- 补全做多显示十行
-vim.o.pumheighet = 10
+vim.o.pumheight = 10
 
 -- 永远显示tabline
 vim.o.showtabline = 2
