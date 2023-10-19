@@ -21,20 +21,6 @@ return {
       },
       { "<leader>E", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
       { "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
-      {
-        "<leader>ge",
-        function()
-          require("neo-tree.command").execute({ source = "git_status", toggle = true })
-        end,
-        desc = "Git explorer",
-      },
-      {
-        "<leader>be",
-        function()
-          require("neo-tree.command").execute({ source = "buffers", toggle = true })
-        end,
-        desc = "Buffer explorer",
-      },
     },
     opts = {
       -- 文件操作快捷键
@@ -89,11 +75,6 @@ return {
       },
       -- 文件组织显隐以及快捷键
       filesystem = {
-        filtered_items = {
-          hide_dotfiles = true,
-          hide_gitignored = true,
-          hide_hidden = true, -- only works on Windows for hidden files/directories
-        },
         window = {
           mappings = {
             ["<bs>"] = "navigate_up",
