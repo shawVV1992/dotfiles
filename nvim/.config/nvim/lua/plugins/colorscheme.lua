@@ -11,6 +11,7 @@ return {
     lazy = true,
     name = "catppuccin",
     opts = {
+      flavour = "mocha", -- latte, frappe, macchiato, mocha
       integrations = {
         alpha = true,
         cmp = true,
@@ -37,6 +38,7 @@ return {
         telescope = true,
         treesitter = true,
         which_key = true,
+        leap = true,
       },
     },
   },
