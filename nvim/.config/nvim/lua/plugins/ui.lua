@@ -1,3 +1,6 @@
+-- if true then
+--   return {}
+-- end
 return {
 
   {
@@ -25,6 +28,7 @@ return {
     opts = {
       -- 取消默认快捷键配置
       use_default_mappings = false,
+      --
       -- 文件操作快捷键
       window = {
         mappings = {
@@ -40,7 +44,7 @@ return {
           ["W"] = "open_split",
           ["w"] = "open_vsplit",
           -- ["t"] = "open_tabnew",
-          -- ["w"] = "open_with_window_picker",
+          -- ["t"] = "open_with_window_picker",
           ["z"] = "close_node",
           ["Z"] = "close_all_nodes",
           ["a"] = {
@@ -112,7 +116,7 @@ return {
             ["bd"] = "buffer_delete",
             ["<bs>"] = "navigate_up",
             ["."] = "set_root",
-            ["s"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
+            ["s"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "s" } },
             ["sc"] = { "order_by_created", nowait = false },
             ["sd"] = { "order_by_diagnostics", nowait = false },
             ["sm"] = { "order_by_modified", nowait = false },
@@ -125,7 +129,6 @@ return {
       -- git 状态浏览器
       git_status = {
         window = {
-          position = "float",
           mappings = {
             ["A"] = "git_add_all",
             ["gu"] = "git_unstage_file",
@@ -134,7 +137,7 @@ return {
             ["gc"] = "git_commit",
             ["gp"] = "git_push",
             ["gg"] = "git_commit_and_push",
-            ["s"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
+            ["s"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "s" } },
             ["sc"] = { "order_by_created", nowait = false },
             ["sd"] = { "order_by_diagnostics", nowait = false },
             ["sm"] = { "order_by_modified", nowait = false },
