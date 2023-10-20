@@ -1,14 +1,11 @@
--- if true then
---   return {}
--- end
 return {
 
+  -- 侧边栏-文件浏览器
   {
-    -- 侧边栏-文件浏览器
     "nvim-neo-tree/neo-tree.nvim",
     keys = {
       {
-        "<leader>fE",
+        "<leader>fe",
         function()
           local Util = require("lazyvim.util")
           require("neo-tree.command").execute({ toggle = true, dir = Util.root() })
@@ -16,14 +13,14 @@ return {
         desc = "Explorer NeoTree (root dir)",
       },
       {
-        "<leader>fe",
+        "<leader>fE",
         function()
           require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
         end,
         desc = "Explorer NeoTree (cwd)",
       },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (cwd)", remap = true },
+      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
+      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
     },
     opts = {
       -- 取消默认快捷键配置
@@ -149,12 +146,127 @@ return {
       },
     },
   },
+
+  -- 右上消息通知
   {
-    -- 右上消息通知
     "rcarriga/nvim-notify",
     opts = {
       -- 显示时间延迟
       timeout = 5000,
+    },
+  },
+
+  -- 底部 状态栏
+  {
+    "nvim-lualine/lualine.nvim",
+    opts = function()
+      local lualine_require = require("lualine_require")
+      lualine_require.require = require
+
+      local icons = require("lazyvim.config").icons
+
+      vim.o.laststatus = vim.g.lualine_laststatus
+      local Util = require("lazyvim.util")
+
+      return {
+        options = {
+          theme = "auto",
+          globalstatus = true,
+          disabled_filetypes = { statusline = { "dashboard", "alpha", "starter" } },
+        },
+        sections = {
+          lualine_a = { "mode" },
+          lualine_b = { "branch" },
+
+          lualine_c = {
+            Util.lualine.root_dir(),
+            {
+              "diagnostics",
+              symbols = {
+                error = icons.diagnostics.Error,
+                warn = icons.diagnostics.Warn,
+                info = icons.diagnostics.Info,
+                hint = icons.diagnostics.Hint,
+              },
+            },
+            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+            { Util.lualine.pretty_path() },
+          },
+          lualine_x = {
+        -- stylua: ignore
+        {
+          function() return require("noice").api.status.command.get() end,
+          cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+          color = Util.ui.fg("Statement"),
+        },
+        -- stylua: ignore
+        {
+          function() return require("noice").api.status.mode.get() end,
+          cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+          color = Util.ui.fg("Constant"),
+        },
+        -- stylua: ignore
+        {
+          function() return "  " .. require("dap").status() end,
+          cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
+          color = Util.ui.fg("Debug"),
+        },
+            {
+              require("lazy.status").updates,
+              cond = require("lazy.status").has_updates,
+              color = Util.ui.fg("Special"),
+            },
+            {
+              "diff",
+              symbols = {
+                added = icons.git.added,
+                modified = icons.git.modified,
+                removed = icons.git.removed,
+              },
+              source = function()
+                local gitsigns = vim.b.gitsigns_status_dict
+                if gitsigns then
+                  return {
+                    added = gitsigns.added,
+                    modified = gitsigns.changed,
+                    removed = gitsigns.removed,
+                  }
+                end
+              end,
+            },
+          },
+          lualine_y = {
+            "encoding",
+          },
+          lualine_z = {
+            { "location", separator = " ", padding = { left = 1, right = 0 } },
+            { "progress", padding = { left = 0, right = 1 } },
+            -- function()
+            --   return " " .. os.date("%R")
+            -- end,
+          },
+        },
+        extensions = { "neo-tree", "lazy" },
+      }
+    end,
+  },
+
+  --顶部 buffer栏
+  {
+    "akinsho/bufferline.nvim",
+    keys = {
+      { "<leader>bf", "<Cmd>BufferLinePick<CR>", desc = "Pick a buffer" },
+      { "<leader>bx", "<Cmd>BufferLinePickClose<CR>", desc = "Pick a buffer and colse it" },
+    },
+    opts = {
+      options = {
+        always_show_bufferline = true,
+        indicator = {
+          -- icon = "▎", -- this should be omitted if indicator style is not 'icon'
+          -- style = "icon" | "underline" | "none",
+          style = "underline",
+        },
+      },
     },
   },
 }
