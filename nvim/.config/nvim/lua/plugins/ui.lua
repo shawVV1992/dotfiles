@@ -38,8 +38,8 @@ return {
           ["<esc>"] = "cancel", -- close preview or floating neo-tree window
           ["P"] = { "toggle_preview", config = { use_float = true } },
           ["l"] = "focus_preview",
-          ["W"] = "open_split",
-          ["w"] = "open_vsplit",
+          ["-"] = "open_split",
+          ["|"] = "open_vsplit",
           -- ["t"] = "open_tabnew",
           -- ["t"] = "open_with_window_picker",
           ["z"] = "close_node",
@@ -87,8 +87,8 @@ return {
             -- ["D"] = "fuzzy_sorter_directory",
             ["f"] = "filter_on_submit",
             ["<c-x>"] = "clear_filter",
-            ["gk"] = "prev_git_modified",
-            ["gj"] = "next_git_modified",
+            ["[g"] = "prev_git_modified",
+            ["]g"] = "next_git_modified",
             ["s"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "s" } },
             ["sc"] = { "order_by_created", nowait = false },
             ["sd"] = { "order_by_diagnostics", nowait = false },
@@ -146,12 +146,89 @@ return {
       },
     },
   },
+  -- 侧边栏-大纲栏
+  {
+    "stevearc/aerial.nvim",
+    opts = function()
+      local Config = require("lazyvim.config")
+      local icons = vim.deepcopy(Config.icons.kinds)
+
+      -- HACK: fix lua's weird choice for `Package` for control
+      -- structures like if/else/for/etc.
+      icons.lua = { Package = icons.Control }
+
+      ---@type table<string, string[]>|false
+      local filter_kind = false
+      if Config.kind_filter then
+        filter_kind = assert(vim.deepcopy(Config.kind_filter))
+        filter_kind._ = filter_kind.default
+        filter_kind.default = nil
+      end
+
+      local opts = {
+        attach_mode = "global",
+        backends = { "lsp", "treesitter", "markdown", "man" },
+        show_guides = true,
+        layout = {
+          resize_to_content = false,
+          win_opts = {
+            winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
+            signcolumn = "yes",
+            statuscolumn = " ",
+          },
+        },
+        icons = icons,
+        filter_kind = filter_kind,
+        -- stylua: ignore
+        guides = {
+          mid_item   = "├╴",
+          last_item  = "└╴",
+          nested_top = "│ ",
+          whitespace = "  ",
+        },
+        keymaps = {
+          ["?"] = "actions.show_help",
+          -- ["g?"] = "actions.show_help",
+          ["<CR>"] = "actions.jump",
+          ["<2-LeftMouse>"] = "actions.jump",
+          ["|"] = "actions.jump_vsplit",
+          ["-"] = "actions.jump_split",
+          ["p"] = "actions.scroll",
+          ["<C-j>"] = "actions.down_and_scroll",
+          ["<C-k>"] = "actions.up_and_scroll",
+          ["{"] = "actions.prev",
+          ["}"] = "actions.next",
+          ["[["] = "actions.prev_up",
+          ["]]"] = "actions.next_up",
+          ["q"] = "actions.close",
+          ["o"] = "actions.tree_toggle",
+          ["za"] = "actions.tree_toggle",
+          ["O"] = "actions.tree_toggle_recursive",
+          ["zA"] = "actions.tree_toggle_recursive",
+          ["l"] = "actions.tree_open",
+          ["zo"] = "actions.tree_open",
+          ["L"] = "actions.tree_open_recursive",
+          ["zO"] = "actions.tree_open_recursive",
+          ["h"] = "actions.tree_close",
+          ["zc"] = "actions.tree_close",
+          ["H"] = "actions.tree_close_recursive",
+          ["zC"] = "actions.tree_close_recursive",
+          ["zr"] = "actions.tree_increase_fold_level",
+          ["zR"] = "actions.tree_open_all",
+          ["zm"] = "actions.tree_decrease_fold_level",
+          ["zM"] = "actions.tree_close_all",
+          ["zx"] = "actions.tree_sync_folds",
+          ["zX"] = "actions.tree_sync_folds",
+        },
+      }
+      return opts
+    end,
+  },
 
   -- 右上消息通知
   {
     "rcarriga/nvim-notify",
     opts = {
-      -- 显示时间延迟
       timeout = 5000,
     },
   },

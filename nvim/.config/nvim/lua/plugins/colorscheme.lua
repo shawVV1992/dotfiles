@@ -6,6 +6,7 @@ return {
       colorscheme = "catppuccin",
     },
   },
+  -- 主题一： catppuccin
   {
     "catppuccin/nvim",
     lazy = true,
