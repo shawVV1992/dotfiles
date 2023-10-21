@@ -1,4 +1,2 @@
-# 💤 LazyVim
-
-A starter template for [LazyVim](https://github.com/LazyVim/LazyVim).
-Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
+# THEVIM 配置说明
+TheVim是基于LazyVim修改而来，主要是为了本人从事C/C++、python的编程学习组织而成的IDE工具。
