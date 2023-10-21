@@ -4,23 +4,23 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     keys = {
-      {
-        "<leader>fe",
-        function()
-          local Util = require("lazyvim.util")
-          require("neo-tree.command").execute({ toggle = true, dir = Util.root() })
-        end,
-        desc = "Explorer NeoTree (root dir)",
-      },
-      {
-        "<leader>fE",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
-        end,
-        desc = "Explorer NeoTree (cwd)",
-      },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
+      -- {
+      --   "<leader>fE",
+      --   function()
+      --     local Util = require("lazyvim.util")
+      --     require("neo-tree.command").execute({ toggle = true, dir = Util.root() })
+      --   end,
+      --   desc = "Explorer NeoTree (cwd)",
+      -- },
+      -- {
+      --   "<leader>fe",
+      --   function()
+      --     require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+      --   end,
+      --   desc = "Explorer NeoTree (root dir)",
+      -- },
+      -- { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (cwd)", remap = true },
+      -- { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (root dir)", remap = true },
     },
     opts = {
       -- 取消默认快捷键配置
@@ -30,6 +30,7 @@ return {
       window = {
         mappings = {
           ["o"] = "open",
+          ["<CR>"] = "open",
           -- ["<space>"] = {
           --   "toggle_node",
           --   nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
