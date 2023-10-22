@@ -1,65 +1,106 @@
 local Util = require("lazyvim.util")
 
 return {
-  -- 搜索
+  -- 多文件搜索替换
   {
-    "nvim-telescope/telescope.nvim",
-    opts = function()
-      local actions = require("telescope.actions")
-
-      local open_with_trouble = function(...)
-        return require("trouble.providers.telescope").open_with_trouble(...)
-      end
-      local open_selected_with_trouble = function(...)
-        return require("trouble.providers.telescope").open_selected_with_trouble(...)
-      end
-      local find_files_no_ignore = function()
-        local action_state = require("telescope.actions.state")
-        local line = action_state.get_current_line()
-        Util.telescope("find_files", { no_ignore = true, default_text = line })()
-      end
-      local find_files_with_hidden = function()
-        local action_state = require("telescope.actions.state")
-        local line = action_state.get_current_line()
-        Util.telescope("find_files", { hidden = true, default_text = line })()
-      end
-
-      return {
-        defaults = {
-          prompt_prefix = " ",
-          selection_caret = " ",
-          -- open files in the first window that is an actual file.
-          -- use the current window if no other window is available.
-
-          get_selection_window = function()
-            local wins = vim.api.nvim_list_wins()
-            table.insert(wins, 1, vim.api.nvim_get_current_win())
-            for _, win in ipairs(wins) do
-              local buf = vim.api.nvim_win_get_buf(win)
-              if vim.bo[buf].buftype == "" then
-                return win
-              end
-            end
-            return 0
-          end,
-          mappings = {
-            i = {
-              ["<c-t>"] = open_with_trouble,
-              ["<a-s>"] = open_selected_with_trouble,
-              ["<a-i>"] = find_files_no_ignore,
-              ["<a-h>"] = find_files_with_hidden,
-              ["<C-Down>"] = actions.cycle_history_next,
-              ["<C-Up>"] = actions.cycle_history_prev,
-              ["<C-f>"] = actions.preview_scrolling_down,
-              ["<C-b>"] = actions.preview_scrolling_up,
-            },
-            n = {
-              ["q"] = actions.close,
-            },
-          },
+    "nvim-pack/nvim-spectre",
+    opts = {
+      mapping = {
+        ["toggle_line"] = {
+          map = "dd",
+          cmd = "<cmd>lua require('spectre').toggle_line()<CR>",
+          desc = "toggle item",
         },
-      }
-    end,
+        ["enter_file"] = {
+          map = "<cr>",
+          cmd = "<cmd>lua require('spectre.actions').select_entry()<CR>",
+          desc = "open file",
+        },
+        ["send_to_qf"] = {
+          map = "<leader>q",
+          cmd = "<cmd>lua require('spectre.actions').send_to_qf()<CR>",
+          desc = "send all items to quickfix",
+        },
+        ["replace_cmd"] = {
+          map = "<leader>c",
+          cmd = "<cmd>lua require('spectre.actions').replace_cmd()<CR>",
+          desc = "input replace command",
+        },
+        ["show_option_menu"] = {
+          map = "<leader>o",
+          cmd = "<cmd>lua require('spectre').show_options()<CR>",
+          desc = "show options",
+        },
+        ["run_current_replace"] = {
+          map = "rr",
+          cmd = "<cmd>lua require('spectre.actions').run_current_replace()<CR>",
+          desc = "replace current line",
+        },
+        ["run_replace"] = {
+          map = "<leader>R",
+          cmd = "<cmd>lua require('spectre.actions').run_replace()<CR>",
+          desc = "replace all",
+        },
+        ["change_view_mode"] = {
+          map = "<leader>v",
+          cmd = "<cmd>lua require('spectre').change_view()<CR>",
+          desc = "change result view mode",
+        },
+        ["change_replace_sed"] = {
+          map = "tS",
+          cmd = "<cmd>lua require('spectre').change_engine_replace('sed')<CR>",
+          desc = "use sed to replace",
+        },
+        ["change_replace_oxi"] = {
+          map = "tO",
+          cmd = "<cmd>lua require('spectre').change_engine_replace('oxi')<CR>",
+          desc = "use oxi to replace",
+        },
+        ["toggle_live_update"] = {
+          map = "tu",
+          cmd = "<cmd>lua require('spectre').toggle_live_update()<CR>",
+          desc = "update when vim writes to file",
+        },
+        ["toggle_ignore_case"] = {
+          map = "ti",
+          cmd = "<cmd>lua require('spectre').change_options('ignore-case')<CR>",
+          desc = "toggle ignore case",
+        },
+        ["toggle_ignore_hidden"] = {
+          map = "th",
+          cmd = "<cmd>lua require('spectre').change_options('hidden')<CR>",
+          desc = "toggle search hidden",
+        },
+        ["resume_last_search"] = {
+          map = "<leader>l",
+          cmd = "<cmd>lua require('spectre').resume_last_search()<CR>",
+          desc = "repeat last search",
+        },
+        -- you can put your mapping here it only use normal mode
+      },
+    },
+    keys = {
+      {
+        "<leader>rr",
+        function()
+          require("spectre").open()
+        end,
+        desc = "Replace in files (Spectre)",
+      },
+      {
+        "<leader>rw",
+        function()
+          require("spectre").open_visual({ select_word = true })
+        end,
+        desc = "Replace current word (Spectre)",
+      },
+      {
+        "<leader>rc",
+        function()
+          require("spectre").open_file_search({ select_word = true })
+        end,
+        desc = "Replace on current file (Spectre)",
+      },
+    },
   },
-  -- 字符定位
 }

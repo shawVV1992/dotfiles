@@ -60,12 +60,11 @@ return {
           ["x"] = "cut_to_clipboard",
           ["p"] = "paste_from_clipboard",
           ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
-          -- ["c"] = {
-          --  "copy",
-          --  config = {
-          --    show_path = "none" -- "none", "relative", "absolute"
-          --  }
-          --}
+          -- ["c"] = { "copy",
+          --   config = {
+          --     show_path = "absolute", -- "none", "relative", "absolute"
+          --   },
+          -- },
           ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
           ["q"] = "close_window",
           ["R"] = "refresh",
@@ -411,6 +410,24 @@ return {
       end
 
       return opts
+    end,
+  },
+  --which-key 面板
+  {
+    "folke/which-key.nvim",
+    opts = function(_, opts)
+      local wk = require("which-key")
+      wk.register({
+        r = {
+          name = "replace", -- optional group name
+          r = { "<cmd>lua require('spectre').open()<CR>", "Replace in files (Spectre)" },
+          w = { "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", "Replace current word (Spectre)" },
+          c = {
+            "<cmd>lua require('spectre').open_file_search({select_word=true})<CR>",
+            "Replace on current file (Spectre)",
+          },
+        },
+      }, { prefix = "<leader>" })
     end,
   },
 }
