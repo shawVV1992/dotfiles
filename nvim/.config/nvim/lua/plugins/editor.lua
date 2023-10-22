@@ -5,6 +5,11 @@ return {
   {
     "nvim-pack/nvim-spectre",
     opts = {
+      default = {
+        replace = {
+          cmd = "oxi",
+        },
+      },
       mapping = {
         ["toggle_line"] = {
           map = "dd",
