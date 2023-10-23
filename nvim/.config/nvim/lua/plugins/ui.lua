@@ -430,4 +430,17 @@ return {
       }, { prefix = "<leader>" })
     end,
   },
+
+  -- 边框颜色
+  {
+    "nvim-zh/colorful-winsep.nvim",
+    config = true,
+    event = { "WinNew" },
+    opts = {
+      highlight = {
+        -- bg = "#FFFF00",
+        fg = "#696969",
+      },
+    },
+  },
 }
