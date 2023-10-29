@@ -146,6 +146,7 @@ return {
       },
     },
   },
+
   -- 侧边栏-大纲栏
   {
     "stevearc/aerial.nvim",
@@ -231,6 +232,12 @@ return {
     opts = {
       timeout = 5000,
     },
+  },
+
+  -- 命令行
+  {
+    "folke/noice.nvim",
+    opts = {},
   },
 
   -- 底部 状态栏
@@ -412,6 +419,7 @@ return {
       return opts
     end,
   },
+
   --which-key 面板
   {
     "folke/which-key.nvim",
