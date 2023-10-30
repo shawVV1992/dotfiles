@@ -41,6 +41,7 @@ return {
         which_key = true,
         -- leap = true,
         flash = true,
+        lsp_saga = false,
       },
     },
   },
