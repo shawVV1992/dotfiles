@@ -143,7 +143,7 @@ return {
     init = function()
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
       -- change a keymap
-      -- keys[#keys + 1] = { "ga", "<cmd>Lspsaga finder<cr>" }
+      keys[#keys + 1] = { "ga", "<cmd>Lspsaga finder<cr>" }
       keys[#keys + 1] = { "K", "<cmd>Lspsaga hover_doc<cr>" }
       -- disable a keymap
       -- keys[#keys + 1] = { "K", false }
@@ -163,7 +163,24 @@ return {
     ui = {
       kind = require("catppuccin.groups.integrations.lsp_saga").custom_kind(),
     },
-    finder = {},
+    finder = {
+      max_height = 0.6,
+      default = "def+ref+imp+tyd",
+      silent = true,
+      methods = {
+        "tyd" == "textDocument/typeDefinition",
+      },
+      keys = {
+        shuttle = "[w",
+        toggle_or_open = "o",
+        split = "i",
+        vsplit = "v",
+        tabe = "t",
+        tabnew = "r",
+        quit = "q",
+        close = "<C-c>k",
+      },
+    },
     symbol_in_winbar = {
       enable = false,
     },

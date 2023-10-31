@@ -1,3 +1,4 @@
+local Util = require("lazyvim.util")
 return {
 
   -- 侧边栏-文件浏览器
@@ -154,8 +155,6 @@ return {
       local Config = require("lazyvim.config")
       local icons = vim.deepcopy(Config.icons.kinds)
 
-      -- HACK: fix lua's weird choice for `Package` for control
-      -- structures like if/else/for/etc.
       icons.lua = { Package = icons.Control }
 
       ---@type table<string, string[]>|false
@@ -220,6 +219,35 @@ return {
           ["zM"] = "actions.tree_close_all",
           ["zx"] = "actions.tree_sync_folds",
           ["zX"] = "actions.tree_sync_folds",
+        },
+        filter_kind = {
+
+          "Array",
+          -- "Boolean",
+          "Class",
+          "Constant",
+          "Constructor",
+          "Enum",
+          "EnumMember",
+          "Event",
+          "Field",
+          "File",
+          "Function",
+          "Interface",
+          -- "Key",
+          "Method",
+          "Module",
+          "Namespace",
+          -- "Null",
+          -- "Number",
+          "Object",
+          "Operator",
+          -- "Package",
+          "Property",
+          -- "String",
+          "Struct",
+          "TypeParameter",
+          "Variable",
         },
       }
       return opts
@@ -441,6 +469,7 @@ return {
 
   -- 边框颜色
   {
+
     "nvim-zh/colorful-winsep.nvim",
     config = true,
     event = { "WinNew" },
