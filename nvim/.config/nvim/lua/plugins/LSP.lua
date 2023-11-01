@@ -145,6 +145,7 @@ return {
       -- change a keymap
       keys[#keys + 1] = { "ga", "<cmd>Lspsaga finder<cr>" }
       keys[#keys + 1] = { "K", "<cmd>Lspsaga hover_doc<cr>" }
+      keys[#keys + 1] = { "<leader>cd", "<cmd>Lspsaga diagnostic_jump_next<cr>" }
       -- disable a keymap
       -- keys[#keys + 1] = { "K", false }
       -- -- add a keymap
@@ -186,6 +187,9 @@ return {
     },
     hover = {
       open_cmd = "!wslview",
+    },
+    lightbulb = {
+      enable = false,
     },
   },
 }

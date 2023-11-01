@@ -45,7 +45,7 @@ return {
           init_selection = "<c-right>",
           node_incremental = "<c-right>",
           scope_incremental = false,
-          node_decremental = "<c-left>",
+          node_decremental = "<bs>",
         },
       },
       textobjects = {

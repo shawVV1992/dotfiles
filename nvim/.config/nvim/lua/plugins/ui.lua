@@ -1,4 +1,4 @@
-local Util = require("lazyvim.util")
+---@diagnostic disable: cast-local-type
 return {
 
   -- 侧边栏-文件浏览器

@@ -1,0 +1,10 @@
+{
+    "diagnostics.disable": [
+        "duplicate-index",
+        "undefined-field",
+        "unused-local",
+        "duplicate-set-field",
+        "assign-type-mismatch",
+        "param-type-mismatch"
+    ]
+}
