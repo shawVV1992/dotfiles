@@ -9,7 +9,6 @@ return {
       { "folke/neodev.nvim", opts = {} },
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
-      "nvimdev/lspsaga.nvim",
     },
     ---@param opts PluginLspOpts
     config = function(_, opts)
@@ -41,6 +40,7 @@ return {
         local client = vim.lsp.get_client_by_id(client_id)
         local buffer = vim.api.nvim_get_current_buf()
         require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
+
         return ret
       end
 
@@ -85,10 +85,27 @@ return {
       )
 
       local function setup(server)
+        local border = {
+          { "🭽", "FloatBorder" },
+          { "▔", "FloatBorder" },
+          { "🭾", "FloatBorder" },
+          { "▕", "FloatBorder" },
+          { "🭿", "FloatBorder" },
+          { "▁", "FloatBorder" },
+          { "🭼", "FloatBorder" },
+          { "▏", "FloatBorder" },
+        }
+
+        -- LSP settings (for overriding per client)
+        local handlers = {
+          ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+          ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+        }
+
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
+          handlers = handlers,
         }, servers[server] or {})
-
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
             return
@@ -103,7 +120,6 @@ return {
 
       -- get all the servers that are available through mason-lspconfig
       local have_mason, mlsp = pcall(require, "mason-lspconfig")
-      local have_lspsaga, lsg = pcall(require, "lspsaga")
       local all_mslp_servers = {}
       if have_mason then
         all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
@@ -126,10 +142,6 @@ return {
         mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
       end
 
-      if have_lspsaga then
-        lsg.setup({})
-      end
-
       if Util.lsp.get_config("denols") and Util.lsp.get_config("tsserver") then
         local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
         Util.lsp.disable("tsserver", is_deno)
@@ -143,53 +155,11 @@ return {
     init = function()
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
       -- change a keymap
-      keys[#keys + 1] = { "ga", "<cmd>Lspsaga finder<cr>" }
-      keys[#keys + 1] = { "K", "<cmd>Lspsaga hover_doc<cr>" }
-      keys[#keys + 1] = { "<leader>cd", "<cmd>Lspsaga diagnostic_jump_next<cr>" }
+      -- keys[#keys + 1] ={ "gK", vim.lsp.buf.signature_help, desc = "Signature Help", has = "signatureHelp" },
       -- disable a keymap
       -- keys[#keys + 1] = { "K", false }
       -- -- add a keymap
       -- keys[#keys + 1] = { "H", "<cmd>echo 'hello'<cr>" }
     end,
-  },
-
-  --lspsaga
-  {
-    "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter", -- optional
-      "nvim-tree/nvim-web-devicons", -- optional
-    },
-    ui = {
-      kind = require("catppuccin.groups.integrations.lsp_saga").custom_kind(),
-    },
-    finder = {
-      max_height = 0.6,
-      default = "def+ref+imp+tyd",
-      silent = true,
-      methods = {
-        "tyd" == "textDocument/typeDefinition",
-      },
-      keys = {
-        shuttle = "[w",
-        toggle_or_open = "o",
-        split = "i",
-        vsplit = "v",
-        tabe = "t",
-        tabnew = "r",
-        quit = "q",
-        close = "<C-c>k",
-      },
-    },
-    symbol_in_winbar = {
-      enable = false,
-    },
-    hover = {
-      open_cmd = "!wslview",
-    },
-    lightbulb = {
-      enable = false,
-    },
   },
 }
