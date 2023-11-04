@@ -7,6 +7,7 @@ return {
     dependencies = {
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
       { "folke/neodev.nvim", opts = {} },
+      "nvimdev/lspsaga.nvim",
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
@@ -85,27 +86,27 @@ return {
       )
 
       local function setup(server)
-        local border = {
-          { "🭽", "FloatBorder" },
-          { "▔", "FloatBorder" },
-          { "🭾", "FloatBorder" },
-          { "▕", "FloatBorder" },
-          { "🭿", "FloatBorder" },
-          { "▁", "FloatBorder" },
-          { "🭼", "FloatBorder" },
-          { "▏", "FloatBorder" },
-        }
-
-        -- LSP settings (for overriding per client)
-
-        local handlers = {
-          ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
-          ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
-        }
-
+        --   local border = {
+        --     { "🭽", "FloatBorder" },
+        --     { "▔", "FloatBorder" },
+        --     { "🭾", "FloatBorder" },
+        --     { "▕", "FloatBorder" },
+        --     { "🭿", "FloatBorder" },
+        --     { "▁", "FloatBorder" },
+        --     { "🭼", "FloatBorder" },
+        --     { "▏", "FloatBorder" },
+        --   }
+        --
+        --   -- LSP settings (for overriding per client)
+        --
+        --   local handlers = {
+        --     ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+        --     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = border }),
+        --   }
+        --
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
-          handlers = handlers,
+          -- handlers = handlers,
         }, servers[server] or {})
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
@@ -155,11 +156,54 @@ return {
     init = function()
       local keys = require("lazyvim.plugins.lsp.keymaps").get()
       -- change a keymap
-      -- keys[#keys + 1] ={ "gK", vim.lsp.buf.signature_help, desc = "Signature Help", has = "signatureHelp" },
+      keys[#keys + 1] = { "K", "<cmd>Lspsaga hover_doc<cr>" }
+      keys[#keys + 1] = { "<leader>ca", "<cmd>Lspsaga code_action<cr>" }
       -- disable a keymap
       -- keys[#keys + 1] = { "K", false }
       -- -- add a keymap
       -- keys[#keys + 1] = { "H", "<cmd>echo 'hello'<cr>" }
+    end,
+  },
+
+  --lspsage
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LazyFile",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter", -- optional
+      "nvim-tree/nvim-web-devicons", -- optional
+    },
+    config = function()
+      -- local border_bl = {
+      --   { "🭽", "FloatBorder" },
+      --   { "▔", "FloatBorder" },
+      --   { "🭾", "FloatBorder" },
+      --   { "▕", "FloatBorder" },
+      --   { "🭿", "FloatBorder" },
+      --   { "▁", "FloatBorder" },
+      --   { "🭼", "FloatBorder" },
+      --   { "▏", "FloatBorder" },
+      -- }
+      local opts = {
+        ui = {
+          -- border = border_bl,
+          border = "rounded",
+        },
+        symbol_in_winbar = {
+          enable = false,
+        },
+        lightbulb = {
+          enable = false,
+        },
+        code_action = {
+          keys = {
+            quit = "q",
+            quit = "<esc>",
+            exec = "<CR>",
+          },
+        },
+      }
+      require("lspsaga").setup(opts)
     end,
   },
 }
