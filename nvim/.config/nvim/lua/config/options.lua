@@ -20,7 +20,7 @@ vim.wo.cursorline = true
 vim.wo.signcolumn = "yes"
 
 -- 右侧参考线，超过表示代码太长，考虑换行
--- vim.wo.colorcolumn = "120"
+vim.wo.colorcolumn = "150"
 
 -- 缩进4个空格等于1个Tab
 vim.o.tabstop = 4

@@ -24,3 +24,7 @@ map("i", "kj", "<esc>", { desc = "back to Normal mode", remap = true })
 
 -- 窗口
 map("n", "<leader>w=", "<C-w>", { desc = "equal window size", remap = true })
+map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })

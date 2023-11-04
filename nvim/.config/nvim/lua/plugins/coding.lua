@@ -48,23 +48,23 @@ return {
             ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
             ["<C-b>"] = cmp.mapping.scroll_docs(-4),
             ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            ["<C-Space>"] = cmp.mapping.complete(),
-            ["<C-e>"] = cmp.mapping.abort(),
-            ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-            -- ["<CR>"] = cmp.mapping({
-            --   i = function(fallback)
-            --     if cmp.visible() and cmp.get_active_entry() then
-            --       cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-            --     else
-            --       fallback()
-            --     end
-            --   end,
-            --   s = cmp.mapping.confirm({ select = true }),
-            --   c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-            -- }),
+            -- ["<C-Space>"] = cmp.mapping.complete(),
+            -- ["<C-e>"] = cmp.mapping.abort(),
+            -- ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+            ["<CR>"] = cmp.mapping({
+              i = function(fallback)
+                if cmp.visible() and cmp.get_selected_entry() then
+                  cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+                else
+                  fallback()
+                end
+              end,
+              s = cmp.mapping.confirm({ select = true }),
+              c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+            }),
             ["<S-CR>"] = cmp.mapping.confirm({
               behavior = cmp.ConfirmBehavior.Replace,
-              select = true,
+              select = false,
             }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
             ["<C-CR>"] = function(fallback)
               cmp.abort()
@@ -98,9 +98,10 @@ return {
             { name = "nvim_lsp" },
             { name = "luasnip" },
             { name = "path" },
-            { name = "emoji" },
           }, {
             { name = "buffer" },
+          }, {
+            { name = "emoji" },
           }),
           formatting = {
             format = function(_, item)
@@ -121,14 +122,15 @@ return {
       end,
       ---@param opts cmp.ConfigSchema
       config = function(_, opts)
+        local cmp = require("cmp")
         for _, source in ipairs(opts.sources) do
           source.group_index = source.group_index or 1
         end
         require("cmp").setup(opts)
+
         -- If you want insert `(` after select function or method item
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-        local cmp = require("cmp")
-        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+        require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
       end,
     },
   },
